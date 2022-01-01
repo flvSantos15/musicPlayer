@@ -4,7 +4,7 @@ import {View, StyleSheet, Text} from 'react-native';
 const Player = () => {
   return (
     <View style={styles.container}>
-      <Text>Player</Text>
+      <Text style={{color: '#f0f7da'}}>Player</Text>
     </View>
   );
 }
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#000039'
   }
 })
 

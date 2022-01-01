@@ -4,9 +4,15 @@ import { StatusBar } from 'react-native'
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <AppNavigator />
-      {/* <StatusBar status={true} color='#000039'/> */}
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+      <StatusBar 
+        barStyle='light-content'
+        translucent={true}
+        backgroundColor={'#000039'}
+      />
+    </>
   );
 }

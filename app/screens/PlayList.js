@@ -4,7 +4,7 @@ import {View, StyleSheet, Text} from 'react-native';
 const Playlist = () => {
   return (
     <View style={styles.container}>
-      <Text>Play List</Text>
+      <Text style={{color: '#f0f7da'}}>Play List</Text>
     </View>
   );
 }
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#000039'
   }
 })
 
