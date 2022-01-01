@@ -1,0 +1,22 @@
+import React from 'react';
+import {View, StyleSheet, Text} from 'react-native';
+
+const Audiolist = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={{color: '#f0f7da'}}>Audio List</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000039',
+  },
+
+})
+
+export default Audiolist;
