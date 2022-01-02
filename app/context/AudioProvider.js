@@ -1,6 +1,7 @@
 import React, { Component, createContext } from 'react';
 import { Alert, StyleSheet } from 'react-native';
 import * as MediaLibrary from 'expo-media-library'
+import { DataProvider } from 'recyclerlistview'
 
 export const AudioContext = createContext()
 export class AudioProvider extends Component {
@@ -8,7 +9,8 @@ export class AudioProvider extends Component {
     super(props)
     this.state = {
       audioFiles: [],
-      permissionError: false
+      permissionError: false,
+      dataProvider: new DataProvider((role1, role2) => role1 !== role2)
     }
   }
 
@@ -23,16 +25,29 @@ export class AudioProvider extends Component {
   }
 
   getAudioFiles = async () => {
+    const { dataProvider, audioFiles } = this.state
     let media = await MediaLibrary
     .getAssetsAsync({
       mediaType: 'audio',
     })
+
     media = await MediaLibrary
     .getAssetsAsync({
       mediaType: 'audio',
       first: media.totalCount,
     })
-    this.setState({...this.state, audioFiles: media.assets})
+
+    this.setState({
+      ...this.state, 
+      dataProvider: dataProvider.cloneWithRows([
+        ...audioFiles,
+        ...media.assets
+      ]), 
+      audioFiles: [
+        ...audioFiles,
+        ...media.assets
+      ]
+    })
   }
 
   getPermission = async () => {
@@ -67,7 +82,8 @@ export class AudioProvider extends Component {
   }
 
   render(){
-    if(this.state.permissionError){
+    const { audioFiles, dataProvider, permissionError } = this.state
+    if(permissionError){
       return(
         <View style={styles.container}>
           <Text style={styles.textErro}>
@@ -77,7 +93,12 @@ export class AudioProvider extends Component {
       )
     }
     return(
-      <AudioContext.Provider value={{audioFiles: this.state.audioFiles}}>
+      <AudioContext.Provider 
+        value={{
+         audioFiles, 
+         dataProvider
+        }}
+      >
         {this.props.children}
       </AudioContext.Provider>
     )
