@@ -9,6 +9,7 @@ export default function App() {
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
+      
       <StatusBar 
         barStyle='light-content'
         translucent={true}

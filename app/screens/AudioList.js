@@ -1,42 +1,51 @@
 import React, { Component } from 'react';
-import {ScrollView, View, StyleSheet, Text, Dimensions} from 'react-native';
+import { ScrollView, View, StyleSheet, Text, Dimensions } from 'react-native';
 import { AudioContext } from '../context/AudioProvider';
 import { RecyclerListView, LayoutProvider } from 'recyclerlistview'
-export class Audiolist extends Component{
-  static contextType = AudioContext 
+import AudioListItem from '../components/AudioListItem';
+import Screen from '../components/Screen';
+export class Audiolist extends Component {
+  static contextType = AudioContext
 
   layoutProvider = new LayoutProvider(
-    (index) => 'audio', 
+    (index) => 'audio',
     (type, dim) => {
-      switch(type){
+      switch (type) {
         case 'audio':
           dim.width = Dimensions.get('window').width
           dim.height = 70
           break
-          default:
-            dim.width = 0
-            dim.height = 0
+        default:
+          dim.width = 0
+          dim.height = 0
       }
-    
-  })
+
+    })
 
   rowRenderer = (type, item) => {
-    
-    return <Text>{item.filename}</Text>
+    return (
+      <AudioListItem
+        title={item.filename}
+        duration={item.duration}
+        onOptionPress={() => {
+          
+        }}
+      />
+    )
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <AudioContext.Consumer>
-        {({dataProvider}) => {
+        {({ dataProvider }) => {
           return (
-            <View style={{flex: 1}}>
-              <RecyclerListView 
-                dataProvider={dataProvider} 
+            <Screen>
+              <RecyclerListView
+                dataProvider={dataProvider}
                 layoutProvider={this.layoutProvider}
                 rowRenderer={this.rowRenderer}
               />
-            </View>
+            </Screen>
           )
         }}
       </AudioContext.Consumer>
@@ -47,10 +56,7 @@ export class Audiolist extends Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // height: '100vh',
-    paddingTop: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingTop: 30,
     backgroundColor: '#000039',
   },
   textNameFile: {

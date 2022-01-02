@@ -4,32 +4,58 @@ import {View, StyleSheet, Text, Dimensions} from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import color from '../misc/color'
 
-const AudioListItem = () => {
+const getThumbnailText = filename => filename[0]
+
+const convertTime = minutes => {
+  if(minutes){
+    const hrs = minutes/60
+    const minute = hrs.toString().split('.')[0]
+    const percent = parseInt(hrs.toString().split('.')[1].slice(0, 2))
+    const sec = Math.ceil((60 * percent) / 100)
+
+    if(parseInt(minute) < 10 && sec < 10){
+      return `0${minute}:0${sec}`
+    }
+
+    if(parseInt(minute) < 10){
+      return `0${minute}:${sec}`
+    }
+
+    if(sec < 10){
+      return `${minute}:0${sec}`
+    }
+
+    return `${minute}:${sec}`
+  }
+}
+
+const AudioListItem = ({title, duration, onOptionPress}) => {
   return(
     <>
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <View style={styles.thumbnail}>
             <Text style={styles.thumbnailText}>
-              A
+              {getThumbnailText(title)}
             </Text>
           </View>
 
           <View style={styles.titleContainer}>
             <Text numberOfLines={1} style={styles.titleContainerText}>
-              Camila Cabello - Senorita
+              {title}
             </Text>
             <Text style={styles.timeText}>
-              03:58
+              {convertTime(duration)}
             </Text>
           </View>
         </View>
 
         <View style={styles.rightContainer}>
           <Entypo 
+            onPress={onOptionPress}
             name="dots-three-vertical" 
             size={20}
-            color={color.FONT_MEDIUM} />
+            color='#fff' />
         </View>
       </View>
       <View style={styles.separated}/>
@@ -41,8 +67,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: width - 80,
-    backgroundColor: '#000235'
+    width: width - 30,
+    backgroundColor: '#000189',
+    borderRadius: 6,
+    padding: 4,
   },
   leftContainer: {
     flexDirection: 'row',
@@ -50,11 +78,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   rightContainer: {
-    flexBasis: 50,
+    flexBasis: 30,
     backgroundColor: '#000185',
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 6,
   },
   thumbnail: {
     height: 50,
@@ -66,7 +95,7 @@ const styles = StyleSheet.create({
   },
   thumbnailText: {
     fontSize: 22,
-    fontWeight: bold,
+    fontWeight: 'bold',
     color: color.FONT,
   },
   titleContainer: {
@@ -75,10 +104,10 @@ const styles = StyleSheet.create({
   },
   titleContainerText: {
     fontSize: 16,
-    color: color.FONT
+    color: '#fff',
   },
   separated: {
-    width: width - 80,
+    width: width - 50,
     backgroundColor: '#333',
     opacity: 0.3,
     height: 0.5,
@@ -87,7 +116,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 14,
-    color: color.FONT_LIGHT,
+    color: '#ddd',
   }
 })
 
