@@ -14,6 +14,7 @@ const Screen = ({children}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 10,
     paddingTop: StatusBar.currentHeight,
     backgroundColor: '#000039',
   }

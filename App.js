@@ -14,6 +14,7 @@ export default function App() {
         barStyle='light-content'
         translucent={true}
         backgroundColor={'#000039'}
+        color='white'
       />
     </AudioProvider>
   );

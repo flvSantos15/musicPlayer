@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text, Dimensions} from 'react-native'
 
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 import color from '../misc/color'
 
 const getThumbnailText = filename => filename[0]
@@ -36,7 +36,8 @@ const AudioListItem = ({title, duration, onOptionPress}) => {
         <View style={styles.leftContainer}>
           <View style={styles.thumbnail}>
             <Text style={styles.thumbnailText}>
-              {getThumbnailText(title)}
+              {/* {getThumbnailText(title)} */}
+              <Ionicons name="musical-notes" size={24} color="black" />
             </Text>
           </View>
 
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
   thumbnail: {
     height: 50,
     flexBasis: 50,
-    backgroundColor: color.FONT_LIGHT,
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 25,
