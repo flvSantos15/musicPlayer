@@ -5,7 +5,7 @@ import { DataProvider } from 'recyclerlistview'
 
 export const AudioContext = createContext()
 export class AudioProvider extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       audioFiles: [],
@@ -16,7 +16,10 @@ export class AudioProvider extends Component {
       currentAudio: {},
       isPlaying: false,
       currentAudioIndex: null,
+      playbackPosition: null,
+      playbackDuration: null,
     }
+    this.totalAudioCount = 0
   }
 
   permissionAllert = () => {
@@ -32,22 +35,23 @@ export class AudioProvider extends Component {
   getAudioFiles = async () => {
     const { dataProvider, audioFiles } = this.state
     let media = await MediaLibrary
-    .getAssetsAsync({
-      mediaType: 'audio',
-    })
+      .getAssetsAsync({
+        mediaType: 'audio',
+      })
 
     media = await MediaLibrary
-    .getAssetsAsync({
-      mediaType: 'audio',
-      first: media.totalCount,
-    })
+      .getAssetsAsync({
+        mediaType: 'audio',
+        first: media.totalCount,
+      })
+    this.totalAudioCount = media.totalCount
 
     this.setState({
-      ...this.state, 
+      ...this.state,
       dataProvider: dataProvider.cloneWithRows([
         ...audioFiles,
         ...media.assets
-      ]), 
+      ]),
       audioFiles: [
         ...audioFiles,
         ...media.assets
@@ -57,52 +61,54 @@ export class AudioProvider extends Component {
 
   getPermission = async () => {
     const permission = await MediaLibrary.getPermissionsAsync()
-    if(permission.granted){
+    if (permission.granted) {
       // we want to get all audio files
       this.getAudioFiles()
     }
-    if(!permission.canAskAgain && !permission.granted){
-      this.setState({...this.state, permissionError: true})
+    if (!permission.canAskAgain && !permission.granted) {
+      this.setState({ ...this.state, permissionError: true })
     }
-    if(!permission.granted && permission.canAskAgain){
-      const {status, canAskAgain} = await MediaLibrary
-      .requestPermissionsAsync()
-      if(status === 'denied' && canAskAgain){
+    if (!permission.granted && permission.canAskAgain) {
+      const { status, canAskAgain } = await MediaLibrary
+        .requestPermissionsAsync()
+      if (status === 'denied' && canAskAgain) {
         //we're gonna display alert that user must allow this permission to work this app
         this.permissionAllert()
       }
-      if(status === 'granted'){
+      if (status === 'granted') {
         //we wnat to get all audio files
         this.getAudioFiles()
       }
-      if(status === 'denied' && !canAskAgain){
+      if (status === 'denied' && !canAskAgain) {
         //we wanna display an error to user
-        this.setState({...this.state, permissionError: true})
+        this.setState({ ...this.state, permissionError: true })
       }
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getPermission()
   }
 
   updateState = (prevState, newState = {}) => {
-    this.setState({...prevState, ...newState})
+    this.setState({ ...prevState, ...newState })
   }
 
-  render(){
-    const { 
-      audioFiles, 
-      dataProvider, 
-      permissionError, 
-      playbackObj, 
-      soundObj, 
+  render() {
+    const {
+      audioFiles,
+      dataProvider,
+      permissionError,
+      playbackObj,
+      soundObj,
       currentAudio,
       isPlaying,
       currentAudioIndex,
+      playbackPosition,
+      playbackDuration,
     } = this.state
-    if(permissionError){
-      return(
+    if (permissionError) {
+      return (
         <View style={styles.container}>
           <Text style={styles.textErro}>
             It looks like you haven't accept the permission.
@@ -110,17 +116,20 @@ export class AudioProvider extends Component {
         </View>
       )
     }
-    return(
-      <AudioContext.Provider 
+    return (
+      <AudioContext.Provider
         value={{
-         audioFiles, 
-         dataProvider, 
-         playbackObj, 
-         soundObj, 
-         currentAudio,
-         isPlaying,
-         currentAudioIndex,
-         updateState: this.updateState
+          audioFiles,
+          dataProvider,
+          playbackObj,
+          soundObj,
+          currentAudio,
+          isPlaying,
+          currentAudioIndex,
+          totalAudioCount: this.totalAudioCount,
+          playbackPosition,
+          playbackDuration,
+          updateState: this.updateState,
         }}
       >
         {this.props.children}

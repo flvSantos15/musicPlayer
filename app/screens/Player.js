@@ -1,25 +1,41 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {View, StyleSheet, Text, StatusBar, Dimensions} from 'react-native';
 import Screen from '../components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Slider from '@react-native-community/slider';
 import PlayerButton from '../components/PlayerButton';
+import { AudioContext } from '../context/AudioProvider';
 
 const {width} = Dimensions.get('window')
 const Player = () => {
+  const context = useContext(AudioContext)
+  const { playbackPosition, playbackDuration} = context
+
+  const calculateSeebBar = () => {
+    if(playbackPosition !== null && playbackDuration !== null) {
+      return playbackPosition / playbackDuration
+    }
+    return 0
+  }
+
   return (
     <Screen>
       <View style={styles.container}>
         <Text style={styles.audioCount}>
-          1 / 99
+          {`${context.currentAudioIndex + 1} / ${context.totalAudioCount}`}
         </Text>
 
         <View style={styles.midBannerContainer}>
-          <MaterialCommunityIcons name="music-circle" size={300} color='#f6f6f6' />
+          <MaterialCommunityIcons 
+            name="music-circle" 
+            size={300} 
+            color={context.isPlaying ? '#eeb117' : '#ddd'} />
         </View>
 
         <View style={styles.audioPlayerContainer}>
-          <Text numberOfLines={1} style={styles.audioTitle}>Audio File Name</Text>
+          <Text numberOfLines={1} style={styles.audioTitle}>
+            {context.currentAudio.filename}
+          </Text>
           <Slider
             style={{
               width: width,
@@ -28,6 +44,7 @@ const Player = () => {
             }}
             minimumValue={0}
             maximumValue={1}
+            value={calculateSeebBar()}
             minimumTrackTintColor='#eeb117'
             maximumTrackTintColor='#fff'            
           />
@@ -38,9 +55,9 @@ const Player = () => {
             </View>
             <View style={styles.audioButtons}>
               <PlayerButton 
-                onPress={() => {alert('playing')}} 
-                size={40} 
-                iconType='PLAY'/>
+                onPress={() => {}} 
+                size={40}
+                iconType={context.isPlaying ? 'PLAY' : 'PAUSE'}/>
             </View>
             <View>
               <PlayerButton size={25} iconType='NEXT'/>
@@ -84,11 +101,12 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   audioButtons: {
-    padding: 4,
+    paddingLeft: 4,
     width: 60,
     height: 60,
     borderRadius: 30,
     alignItems: 'center',
+    // alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: '#c02932',
   }
