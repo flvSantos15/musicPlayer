@@ -56,7 +56,9 @@ const AudioListItem = ({title, duration, onOptionPress}) => {
             onPress={onOptionPress}
             name="dots-three-vertical" 
             size={20}
-            color='#fff' />
+            color='#bc0b27' 
+            style={{padding: 10,}}
+          />
         </View>
       </View>
       <View style={styles.separated}/>
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     width: width - 30,
-    backgroundColor: '#000189',
+    backgroundColor: '#003989',
     borderRadius: 6,
     padding: 4,
   },
@@ -79,12 +81,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   rightContainer: {
-    flexBasis: 30,
-    backgroundColor: '#000185',
+    flexBasis: 50,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 6,
   },
   thumbnail: {
     height: 50,
@@ -108,12 +108,12 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   separated: {
-    width: width - 50,
-    backgroundColor: '#333',
+    width: width -30,
+    backgroundColor: '#f6f6f6',
     opacity: 0.3,
     height: 0.5,
     alignSelf: 'center',
-    marginTop: 10
+    marginTop: 2
   },
   timeText: {
     fontSize: 14,

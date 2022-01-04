@@ -13,12 +13,11 @@ export class Audiolist extends Component {
     this.state = {
       optionModalVisible: false,
     }
-  }
 
-  // handleOptionModalVisibleOpen = () => {
-  //   const { optionModalVisible } = this.state
-  //   this.setState({...this.state, optionModalVisible: true})
-  // }
+    this.currentItem = {
+
+    }
+  } 
 
   layoutProvider = new LayoutProvider(
     (index) => 'audio',
@@ -41,6 +40,7 @@ export class Audiolist extends Component {
         title={item.filename}
         duration={item.duration}
         onOptionPress={() => {
+          this.currentItem = item
           this.setState({...this.state, optionModalVisible: true})
         }}
       />
@@ -58,7 +58,15 @@ export class Audiolist extends Component {
                 layoutProvider={this.layoutProvider}
                 rowRenderer={this.rowRenderer}
               />
-              <OptionModal visible={this.state.optionModalVisible}/>
+              <OptionModal
+                onPlayPress={() => alert('Playing')}
+                onPlayListPress={() => alert('PlayList')}
+                currentItem={this.currentItem}
+                onClose={() => {
+                  this.setState({...this.state, optionModalVisible: false})
+                }}
+                visible={this.state.optionModalVisible} 
+              />
             </Screen>
           )
         }}
@@ -70,7 +78,7 @@ export class Audiolist extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
+    // paddingTop: 30,
     backgroundColor: '#000039',
   },
   textNameFile: {
