@@ -14,6 +14,8 @@ export class AudioProvider extends Component {
       playbackObj: null,
       soundObj: null,
       currentAudio: {},
+      isPlaying: false,
+      currentAudioIndex: null,
     }
   }
 
@@ -89,7 +91,16 @@ export class AudioProvider extends Component {
   }
 
   render(){
-    const { audioFiles, dataProvider, permissionError, playbackObj, soundObj, currentAudio } = this.state
+    const { 
+      audioFiles, 
+      dataProvider, 
+      permissionError, 
+      playbackObj, 
+      soundObj, 
+      currentAudio,
+      isPlaying,
+      currentAudioIndex,
+    } = this.state
     if(permissionError){
       return(
         <View style={styles.container}>
@@ -107,6 +118,8 @@ export class AudioProvider extends Component {
          playbackObj, 
          soundObj, 
          currentAudio,
+         isPlaying,
+         currentAudioIndex,
          updateState: this.updateState
         }}
       >

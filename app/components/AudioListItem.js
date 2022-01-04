@@ -1,11 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native'
-import { AudioContext } from '../context/AudioProvider';
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import color from '../misc/color'
-
-const getThumbnailText = filename => filename[0]
 
 const convertTime = minutes => {
   if (minutes) {
@@ -30,11 +27,18 @@ const convertTime = minutes => {
   }
 }
 
+const renderPlayPauseIcon = isPlaying => {
+  if(isPlaying) return <Entypo name='controller-paus' size={24} color='#bc0b17'/>
+  return <Entypo name='controller-play' size={24} color='#bc0b17'/>
+}
+
 const AudioListItem = ({ 
-  title, 
+  title,
   duration, 
   onOptionPress,
   onAudioPress,
+  isPlaying,
+  activeListItem,
 }) => {
 
   return (
@@ -42,18 +46,29 @@ const AudioListItem = ({
       <View style={styles.container}>
         <TouchableOpacity onPress={onAudioPress} style={{flex: 1}}>
           <View style={styles.leftContainer}>
-            <View style={styles.thumbnail}>
+            <View style={[styles.thumbnail, {
+              backgroundColor: activeListItem ?
+              '#fff' : '#dedede'
+            }]}>
               <Text style={styles.thumbnailText}>
-                {/* {getThumbnailText(title)} */}
-                <Ionicons name="musical-notes" size={24} color="black" />
+                {activeListItem 
+                ? renderPlayPauseIcon(isPlaying)
+                : <Ionicons name="musical-notes" size={24} color='#bc0b17' />
+                }
               </Text>
             </View>
 
             <View style={styles.titleContainer}>
-              <Text numberOfLines={1} style={styles.titleContainerText}>
+              <Text numberOfLines={1} style={[styles.titleContainerText, {
+                color: activeListItem ?
+                '#eeb119' : '#fff'
+              }]}>
                 {title}
               </Text>
-              <Text style={styles.timeText}>
+              <Text style={[styles.timeText, {
+                color: activeListItem ?
+                '#eeb119' : '#fff'
+              }]}>
                 {convertTime(duration)}
               </Text>
             </View>
@@ -65,7 +80,7 @@ const AudioListItem = ({
             onPress={onOptionPress}
             name="dots-three-vertical"
             size={20}
-            color='#bc0b27'
+            color='#bc0b17'
             style={{ padding: 10, }}
           />
         </View>
