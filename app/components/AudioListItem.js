@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native'
+import { AudioContext } from '../context/AudioProvider';
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import color from '../misc/color'
@@ -35,6 +36,7 @@ const AudioListItem = ({
   onOptionPress,
   onAudioPress,
 }) => {
+
   return (
     <>
       <View style={styles.container}>

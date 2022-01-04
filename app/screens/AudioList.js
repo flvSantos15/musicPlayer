@@ -6,6 +6,7 @@ import AudioListItem from '../components/AudioListItem';
 import Screen from '../components/Screen';
 import OptionModal from '../components/OptionModal';
 import { Audio } from 'expo-av'
+import { play, pause, resume } from '../misc/audioController'
 export class Audiolist extends Component {
   static contextType = AudioContext
 
@@ -13,9 +14,6 @@ export class Audiolist extends Component {
     super(props)
     this.state = {
       optionModalVisible: false,
-      playbackObj: null,
-      soundObj: null,
-      currentAudio: {},
     }
 
     this.currentItem = {
@@ -38,63 +36,89 @@ export class Audiolist extends Component {
 
     })
 
-  handleAudioPress = async (audio) => {
+  handleAudioPress = async audio => {
+    const {playbackObj, soundObj, currentAudio, updateState} = this.context
+    //fazer um condição pra tocar outra music msm se ja estiver tocando outra
+    //para a atual e iniciar outra
+    //fazer um if dentro de if
+
     //playing audio for the first time
-    if (this.state.soundObj === null) {
+    if (soundObj === null) {
       const playbackObj = new Audio.Sound()
-      const status = await playbackObj.loadAsync(
-        { uri: audio.uri },
-        { shouldPlay: true }
-      )
-      return this.setState({
-        ...this.state,
+      const status = await play(playbackObj, audio.uri)
+      return updateState(
+        this.context, {
         currentAudio: audio,
         playbackObj: playbackObj,
         soundObj: status
       })
     }
+
     //pause the audio
-    if(this.state.soundObj.isLoaded && this.state.soundObj.isPlaying) {
-      const status = await this.state.playbackObj
-      .setStatusAsync({shouldPlay: false})
-      
-      return this.setState({
-        ...this.state,
-        soundObj: status
-      })
+    if(soundObj.isLoaded && soundObj.isPlaying) {
+      const status = await pause(playbackObj)
+      return updateState(
+        this.context, {
+          soundObj: status
+        })
     }
 
 
     //resume the audio
-    if(this.state.soundObj.isLoaded 
-      && !this.state.soundObj.isPlaying 
-      && this.state.currentAudio.id === audio.id){
-        const status = await this.state.playbackObj.playAsync()
-        
-        alert(audio.id)
-        return this.setState({
-          ...this.state,
-          soundObj: status
-        })
+    if(soundObj.isLoaded 
+      && !soundObj.isPlaying 
+      && currentAudio.id === audio.id){
+        // const status = await this.state.playbackObj.playAsync()
+        const status = await resume(playbackObj)
+        return updateState(
+          this.context, {
+            soundObj: status
+          })
     }
 
-    if(this.state.soundObj.isLoaded 
-      && !this.state.soundObj.isPlaying
-      && this.state.currentAudio.id !== audio.id ){
-        const playbackObj = new Audio.Sound()
-        const status = await playbackObj.loadAsync(
-          {uri: audio.uri},
-          {shouldPlay: true}
-        )
+    /*
+    if(soundObj.isLoaded 
+      && soundObj.isPlaying
+      && currentAudio.id !== audio.id ){
+        //parar o current
+        const status = await pause(playbackObj)
+        //tirei o return
+        updateState(
+          this.context, {
+            soundObj: status
+          })
         
-        return this.setState({
-          ...this.state,
-          currentAudio: audio,
-          playbackObj: playbackObj,
-          soundObj: status
-        })
+        //tocar outro
+
+        if(soundObj.isLoaded && soundObj.isPlaying
+        ){
+          const playbackObj = new Audio.Sound()
+          const status = await play(playbackObj, audio.uri)
+          return updateState(
+            this.context, {
+              currentAudio: audio,
+              playbackObj: playbackObj,
+              soundObj: status
+            })
+        }
+
+
+        // const playbackObj = new Audio.Sound()
+        // const status = await playbackObj.loadAsync(
+        //   {uri: audio.uri},
+        //   {shouldPlay: true}
+        // )
+        
+        // return this.setState({
+        //   ...this.state,
+        //   currentAudio: audio,
+        //   playbackObj: playbackObj,
+        //   soundObj: status
+        // })
     }
+    */
   }
+  
 
   rowRenderer = (type, item) => {
     return (
