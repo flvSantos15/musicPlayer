@@ -11,10 +11,9 @@ export default function App() {
       </NavigationContainer>
       
       <StatusBar 
-        barStyle='light-content'
-        translucent={true}
-        backgroundColor={'#000039'}
-        color='white'
+        barStyle='dark-content'
+        translucent={false}
+        backgroundColor={'#fff'}
       />
     </AudioProvider>
   );

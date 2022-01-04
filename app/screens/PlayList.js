@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, StatusBar} from 'react-native';
 
 const Playlist = () => {
   return (
@@ -12,9 +12,9 @@ const Playlist = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000039'
+    marginTop: 5,
+    paddingTop: StatusBar.currentHeight,
+    backgroundColor: '#001259'
   }
 })
 

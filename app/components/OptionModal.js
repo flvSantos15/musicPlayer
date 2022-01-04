@@ -29,14 +29,14 @@ const OptionModal = ({
           <View style={styles.optionContainer}>
             <TouchableOpacity onPress={onPlayPress}>
               <Text style={styles.option}>
-                <AntDesign name="playcircleo" size={20} color="#bc0b27" />
+                <AntDesign name="playcircleo" size={20} color="#bc0b17" />
                 {' '}
                 Play
               </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={onPlayListPress}>
               <Text style={styles.option}>
-                <MaterialIcons name="playlist-add" size={20} color="#bc0b27" />
+                <MaterialIcons name="playlist-add" size={20} color="#bc0b17" />
                 {' '}
                 Add to Playlist
               </Text>
@@ -66,14 +66,15 @@ const styles = StyleSheet.create({
     zIndex: 9,
   },
   optionContainer: {
-    padding: 20,
+    padding: 16,
+    backgroundColor: '#001459',
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    padding: 20,
-    paddingBottom: 0,
-    color: '#fff',
+    padding: 16,
+    paddingBottom: 2,
+    color: '#eeb119',
     borderBottomColor: '#fff',
     borderBottomWidth: 0.5,
   },

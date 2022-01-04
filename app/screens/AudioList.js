@@ -145,19 +145,4 @@ export class Audiolist extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // paddingTop: 30,
-    backgroundColor: '#000039',
-  },
-  textNameFile: {
-    color: '#f0f7da',
-    // color: '#002939',
-    padding: 10,
-    borderBottomColor: 'red',
-    borderBottomWidth: 2,
-  }
-})
-
 export default Audiolist;
