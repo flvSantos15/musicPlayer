@@ -31,13 +31,12 @@ export const resume = async (playbackObj) => {
 }
 
 //select another audio
-export const playAnother = async (playbackObj, uri) => {
+export const playNext = async (playbackObj, uri) => {
   try {
-    return await playbackObj.loadAsync(
-      {uri},
-      {shouldPlay: true}
-    )
+    await playbackObj.stopAsync()
+    await playbackObj.unloadAsync()
+    return await play(playbackObj, uri)
   }catch(error) {
-    console.log('error inside playAnother helper method', erro.message)
+    console.log('error inside playNext helper method', erro.message)
   }
 }
