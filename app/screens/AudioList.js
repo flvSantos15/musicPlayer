@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, Text, Dimensions } from 'react-native';
+import { StyleSheet, Text, Dimensions } from 'react-native';
 import { AudioContext } from '../context/AudioProvider';
 import { RecyclerListView, LayoutProvider } from 'recyclerlistview'
 import AudioListItem from '../components/AudioListItem';
 import Screen from '../components/Screen';
 import OptionModal from '../components/OptionModal';
+import { Audio } from 'expo-av'
 export class Audiolist extends Component {
   static contextType = AudioContext
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       optionModalVisible: false,
+      playbackObj: null,
+      soundObj: null,
+      currentAudio: {},
     }
 
     this.currentItem = {
 
     }
-  } 
+  }
 
   layoutProvider = new LayoutProvider(
     (index) => 'audio',
@@ -34,14 +38,73 @@ export class Audiolist extends Component {
 
     })
 
+  handleAudioPress = async (audio) => {
+    //playing audio for the first time
+    if (this.state.soundObj === null) {
+      const playbackObj = new Audio.Sound()
+      const status = await playbackObj.loadAsync(
+        { uri: audio.uri },
+        { shouldPlay: true }
+      )
+      return this.setState({
+        ...this.state,
+        currentAudio: audio,
+        playbackObj: playbackObj,
+        soundObj: status
+      })
+    }
+    //pause the audio
+    if(this.state.soundObj.isLoaded && this.state.soundObj.isPlaying) {
+      const status = await this.state.playbackObj
+      .setStatusAsync({shouldPlay: false})
+      
+      return this.setState({
+        ...this.state,
+        soundObj: status
+      })
+    }
+
+
+    //resume the audio
+    if(this.state.soundObj.isLoaded 
+      && !this.state.soundObj.isPlaying 
+      && this.state.currentAudio.id === audio.id){
+        const status = await this.state.playbackObj.playAsync()
+        
+        alert(audio.id)
+        return this.setState({
+          ...this.state,
+          soundObj: status
+        })
+    }
+
+    if(this.state.soundObj.isLoaded 
+      && !this.state.soundObj.isPlaying
+      && this.state.currentAudio.id !== audio.id ){
+        const playbackObj = new Audio.Sound()
+        const status = await playbackObj.loadAsync(
+          {uri: audio.uri},
+          {shouldPlay: true}
+        )
+        
+        return this.setState({
+          ...this.state,
+          currentAudio: audio,
+          playbackObj: playbackObj,
+          soundObj: status
+        })
+    }
+  }
+
   rowRenderer = (type, item) => {
     return (
       <AudioListItem
         title={item.filename}
         duration={item.duration}
+        onAudioPress={() => this.handleAudioPress(item)}
         onOptionPress={() => {
           this.currentItem = item
-          this.setState({...this.state, optionModalVisible: true})
+          this.setState({ ...this.state, optionModalVisible: true })
         }}
       />
     )
@@ -63,9 +126,9 @@ export class Audiolist extends Component {
                 onPlayListPress={() => alert('PlayList')}
                 currentItem={this.currentItem}
                 onClose={() => {
-                  this.setState({...this.state, optionModalVisible: false})
+                  this.setState({ ...this.state, optionModalVisible: false })
                 }}
-                visible={this.state.optionModalVisible} 
+                visible={this.state.optionModalVisible}
               />
             </Screen>
           )

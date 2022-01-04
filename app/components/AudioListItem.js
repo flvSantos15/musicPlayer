@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native'
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import color from '../misc/color'
@@ -7,21 +7,21 @@ import color from '../misc/color'
 const getThumbnailText = filename => filename[0]
 
 const convertTime = minutes => {
-  if(minutes){
-    const hrs = minutes/60
+  if (minutes) {
+    const hrs = minutes / 60
     const minute = hrs.toString().split('.')[0]
     const percent = parseInt(hrs.toString().split('.')[1].slice(0, 2))
     const sec = Math.ceil((60 * percent) / 100)
 
-    if(parseInt(minute) < 10 && sec < 10){
+    if (parseInt(minute) < 10 && sec < 10) {
       return `0${minute}:0${sec}`
     }
 
-    if(parseInt(minute) < 10){
+    if (parseInt(minute) < 10) {
       return `0${minute}:${sec}`
     }
 
-    if(sec < 10){
+    if (sec < 10) {
       return `${minute}:0${sec}`
     }
 
@@ -29,39 +29,46 @@ const convertTime = minutes => {
   }
 }
 
-const AudioListItem = ({title, duration, onOptionPress}) => {
-  return(
+const AudioListItem = ({ 
+  title, 
+  duration, 
+  onOptionPress,
+  onAudioPress,
+}) => {
+  return (
     <>
       <View style={styles.container}>
-        <View style={styles.leftContainer}>
-          <View style={styles.thumbnail}>
-            <Text style={styles.thumbnailText}>
-              {/* {getThumbnailText(title)} */}
-              <Ionicons name="musical-notes" size={24} color="black" />
-            </Text>
-          </View>
+        <TouchableOpacity onPress={onAudioPress} style={{flex: 1}}>
+          <View style={styles.leftContainer}>
+            <View style={styles.thumbnail}>
+              <Text style={styles.thumbnailText}>
+                {/* {getThumbnailText(title)} */}
+                <Ionicons name="musical-notes" size={24} color="black" />
+              </Text>
+            </View>
 
-          <View style={styles.titleContainer}>
-            <Text numberOfLines={1} style={styles.titleContainerText}>
-              {title}
-            </Text>
-            <Text style={styles.timeText}>
-              {convertTime(duration)}
-            </Text>
+            <View style={styles.titleContainer}>
+              <Text numberOfLines={1} style={styles.titleContainerText}>
+                {title}
+              </Text>
+              <Text style={styles.timeText}>
+                {convertTime(duration)}
+              </Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.rightContainer}>
-          <Entypo 
+          <Entypo
             onPress={onOptionPress}
-            name="dots-three-vertical" 
+            name="dots-three-vertical"
             size={20}
-            color='#bc0b27' 
-            style={{padding: 10,}}
+            color='#bc0b27'
+            style={{ padding: 10, }}
           />
         </View>
       </View>
-      <View style={styles.separated}/>
+      <View style={styles.separated} />
     </>
   )
 }
@@ -100,7 +107,7 @@ const styles = StyleSheet.create({
     color: color.FONT,
   },
   titleContainer: {
-    width: width - 180,
+    width: width - 140,
     paddingLeft: 10,
   },
   titleContainerText: {
@@ -108,7 +115,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   separated: {
-    width: width -30,
+    width: width - 30,
     backgroundColor: '#f6f6f6',
     opacity: 0.3,
     height: 0.5,
