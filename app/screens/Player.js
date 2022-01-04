@@ -3,9 +3,10 @@ import {View, StyleSheet, Text, StatusBar, Dimensions} from 'react-native';
 import Screen from '../components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Slider from '@react-native-community/slider';
+import PlayerButton from '../components/PlayerButton';
 
+const {width} = Dimensions.get('window')
 const Player = () => {
-  const {width} = Dimensions.get('window')
   return (
     <Screen>
       <View style={styles.container}>
@@ -30,6 +31,21 @@ const Player = () => {
             minimumTrackTintColor='#eeb117'
             maximumTrackTintColor='#fff'            
           />
+
+          <View style={styles.audioControllers}>
+            <View>
+              <PlayerButton size={25} iconType='PREV'/>
+            </View>
+            <View style={styles.audioButtons}>
+              <PlayerButton 
+                onPress={() => {alert('playing')}} 
+                size={40} 
+                iconType='PLAY'/>
+            </View>
+            <View>
+              <PlayerButton size={25} iconType='NEXT'/>
+            </View>
+          </View>
         </View>
       </View>
     </Screen>
@@ -37,6 +53,14 @@ const Player = () => {
 }
 
 const styles = StyleSheet.create({
+  audioControllers: {
+    width: width - 100,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    alignSelf: 'center',
+    paddingBottom: 18,
+  },
   container: {
     flex: 1,
     marginTop: 5,
@@ -58,6 +82,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     padding: 15,
+  },
+  audioButtons: {
+    padding: 4,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#c02932',
   }
 })
 
