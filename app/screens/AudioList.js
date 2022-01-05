@@ -7,6 +7,7 @@ import Screen from '../components/Screen';
 import OptionModal from '../components/OptionModal';
 import { Audio } from 'expo-av'
 import { play, pause, resume, playNext } from '../misc/audioController'
+import { storeAudioForNextOpening } from '../misc/helper'
 export class Audiolist extends Component {
   static contextType = AudioContext
 
@@ -72,7 +73,7 @@ export class Audiolist extends Component {
         //parar o audio
         this.context.playbackObj.unloadAsync()
         //atualizo o status
-        return this.context.updateState(
+        this.context.updateState(
           this.context, {
             soundObj: null,
             currentAudio: this.context.audioFiles[0],
@@ -81,6 +82,7 @@ export class Audiolist extends Component {
             playbackPosition: null,
             playbackDuration: null,
           })
+        return await storeAudioForNextOpening(this.context.audioFiles[0], 0)
       }
       //otherwise we wnat to select the next audio
       const audio = this.context.audioFiles[nextAudioIndex]
@@ -92,6 +94,7 @@ export class Audiolist extends Component {
           isPlaying: true,
           currentAudioIndex: nextAudioIndex,
         })
+      await storeAudioForNextOpening(audio, nextAudioIndex)
     }
   }
   
@@ -117,7 +120,8 @@ export class Audiolist extends Component {
         isPlaying: true,
         currentAudioIndex: index,
       })
-      return playbackObj.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate)
+      playbackObj.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate)
+      return storeAudioForNextOpening(audio, index)
     }
 
     //pause the audio
@@ -156,9 +160,14 @@ export class Audiolist extends Component {
           currentAudioIndex: index,
         }
       )
+      return storeAudioForNextOpening(audio, index)
     }
   }
   
+
+  componentDidMount(){
+    this.context.loadPreviousAudio()
+  }
 
   rowRenderer = (type, item, index, extendedState) => {
     return (
@@ -180,6 +189,7 @@ export class Audiolist extends Component {
     return (
       <AudioContext.Consumer>
         {({ dataProvider, isPlaying }) => {
+          if(!dataProvider._data.length)return null
           return (
             <Screen>
               <RecyclerListView

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {View, StyleSheet, Text, StatusBar, Dimensions} from 'react-native';
 import Screen from '../components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -17,6 +17,12 @@ const Player = () => {
     }
     return 0
   }
+
+  useEffect(() => {
+    context.loadPreviousAudio()
+  }, [])
+
+  if(!context.currentAudio) return null
 
   return (
     <Screen>
