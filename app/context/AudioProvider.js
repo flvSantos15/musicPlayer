@@ -3,6 +3,7 @@ import { Alert, StyleSheet } from 'react-native';
 import * as MediaLibrary from 'expo-media-library'
 import { DataProvider } from 'recyclerlistview'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Audio } from 'expo-av'
 
 export const AudioContext = createContext()
 export class AudioProvider extends Component {
@@ -108,6 +109,12 @@ export class AudioProvider extends Component {
 
   componentDidMount() {
     this.getPermission()
+    if(this.state.playbackObj === null){
+      this.setState({
+        ...this.state,
+        playbackObj: new Audio.Sound()
+      })
+    }
   }
 
   updateState = (prevState, newState = {}) => {
