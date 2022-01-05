@@ -1,8 +1,19 @@
-import React from 'react';
-import {View, StyleSheet, Modal, TextInput, Dimensions, TouchableWithoutFeedback} from 'react-native';
+import React, { useState} from 'react';
+import {View, StyleSheet, Modal, TextInput, Dimensions, TouchableWithoutFeedback, Text} from 'react-native';
 import { AntDesign } from '@expo/vector-icons'
 
 const PlayListInputModal = ({visible, onClose, onSubmit}) => {
+  const [playListName, setPlayListName] = useState('')
+
+  const handleOnSubmit = ()   => {
+    if(!playListName.trim()){
+      onClose()
+    }else{
+      onSubmit(playListName)
+      setPlayListName('')
+      onClose()
+    }
+  }
   return (
     <Modal 
       visible={visible}
@@ -11,15 +22,20 @@ const PlayListInputModal = ({visible, onClose, onSubmit}) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.inputContainer}>
+          <Text style={{color: '#606060'}}>Create New Playlist</Text>
           <TextInput 
             style={styles.input}
+            value={playListName}
+            onChangeText={
+              (text) => setPlayListName(text)
+            }
           />
           <AntDesign 
             name='check' 
             size={24} 
             color='#fff'
             style={styles.submitIcon}
-            onPress={onSubmit}
+            onPress={handleOnSubmit}
           />
         </View>
       </View>

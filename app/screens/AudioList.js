@@ -201,6 +201,9 @@ export class Audiolist extends Component {
               <OptionModal
                 onPlayPress={() => alert('Playing')}
                 onPlayListPress={() => {
+                  this.context.updateState(this.context, {
+                    addToPlayList: this.currentItem
+                  })
                   this.props.navigation.navigate('PlayList')
                 }}
                 currentItem={this.currentItem}
