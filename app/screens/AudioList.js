@@ -37,66 +37,6 @@ export class Audiolist extends Component {
 
     }
   )
-
-  // onPlaybackStatusUpdate = async playbackStatus => {
-  //   if(playbackStatus.isLoaded && playbackStatus.isPlaying){
-  //     this.context.updateState(this.context, {
-  //       playbackPosition: playbackStatus.positionMillis,
-  //       playbackDuration: playbackStatus.durationMillis,
-  //     })
-  //   }
-  //   /*
-  //     Object {
-  //       "androidImplementation": "SimpleExoPlayer",
-  //       "didJustFinish": false,
-  //       "durationMillis": 294948,
-  //       "isBuffering": false,
-  //       "isLoaded": true,
-  //       "isLooping": false,
-  //       "isMuted": false,
-  //       "isPlaying": false,
-  //       "playableDurationMillis": 68284,
-  //       "positionMillis": 2091,
-  //       "progressUpdateIntervalMillis": 500,
-  //       "rate": 1,
-  //       "shouldCorrectPitch": false,
-  //       "shouldPlay": false,
-  //       "uri": "/storage/emulated/0/Music/Tokyo Ghoul - Glassy Sky [東京喰種 -トーキョーグール-]_256k.mp3",
-  //       "volume": 1,
-  //     }
-  //   */
-    
-  //   if(playbackStatus.didJustFinish){
-  //     const nextAudioIndex = this.context.currentAudioIndex + 1
-  //     //there's no next audio to play
-  //     if(nextAudioIndex >= this.context.totalAudioCount){
-  //       //parar o audio
-  //       this.context.playbackObj.unloadAsync()
-  //       //atualizo o status
-  //       this.context.updateState(
-  //         this.context, {
-  //           soundObj: null,
-  //           currentAudio: this.context.audioFiles[0],
-  //           isPlaying: false,
-  //           currentAudioIndex: 0,
-  //           playbackPosition: null,
-  //           playbackDuration: null,
-  //         })
-  //       return await storeAudioForNextOpening(this.context.audioFiles[0], 0)
-  //     }
-  //     //otherwise we wnat to select the next audio
-  //     const audio = this.context.audioFiles[nextAudioIndex]
-  //     const status = await playNext(this.context.playbackObj, audio.uri)
-  //     this.context.updateState(
-  //       this.context, {
-  //         soundObj: status,
-  //         currentAudio: audio,
-  //         isPlaying: true,
-  //         currentAudioIndex: nextAudioIndex,
-  //       })
-  //     await storeAudioForNextOpening(audio, nextAudioIndex)
-  //   }
-  // }
   
   handleAudioPress = async audio => {
     const {

@@ -4,7 +4,7 @@ import * as MediaLibrary from 'expo-media-library'
 import { DataProvider } from 'recyclerlistview'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Audio } from 'expo-av'
-import storeAudioForNextOpening from '../misc/helper'
+import { storeAudioForNextOpening } from '../misc/helper'
 import {playNext} from '../misc/audioController'
 
 export const AudioContext = createContext()
