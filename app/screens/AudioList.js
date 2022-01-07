@@ -5,9 +5,9 @@ import { RecyclerListView, LayoutProvider } from 'recyclerlistview'
 import AudioListItem from '../components/AudioListItem';
 import Screen from '../components/Screen';
 import OptionModal from '../components/OptionModal';
-import { Audio } from 'expo-av'
-import { play, pause, resume, playNext } from '../misc/audioController'
-import { storeAudioForNextOpening } from '../misc/helper'
+// import { Audio } from 'expo-av'
+import { play, pause, resume, playNext, selectAudio } from '../misc/audioController'
+// import { storeAudioForNextOpening } from '../misc/helper'
 export class Audiolist extends Component {
   static contextType = AudioContext
 
@@ -39,69 +39,71 @@ export class Audiolist extends Component {
   )
   
   handleAudioPress = async audio => {
-    const {
-      playbackObj, 
-      soundObj, 
-      currentAudio, 
-      updateState,
-      audioFiles,
-    } = this.context
+    await selectAudio(audio, this.context)
 
-    //playing audio for the first time
-    if (soundObj === null) {
-      const playbackObj = new Audio.Sound()
-      const status = await play(playbackObj, audio.uri)
-      const index = audioFiles.indexOf(audio)
-      updateState(
-        this.context, {
-        currentAudio: audio,
-        playbackObj: playbackObj,
-        soundObj: status,
-        isPlaying: true,
-        currentAudioIndex: index,
-      })
-      playbackObj.setOnPlaybackStatusUpdate(this.context.onPlaybackStatusUpdate)
-      return storeAudioForNextOpening(audio, index)
-    }
+    // const {
+    //   playbackObj, 
+    //   soundObj, 
+    //   currentAudio, 
+    //   updateState,
+    //   audioFiles,
+    // } = this.context
 
-    //pause the audio
-    if(soundObj.isLoaded 
-      && soundObj.isPlaying
-      && currentAudio.id === audio.id) {
-      const status = await pause(playbackObj)
-      return updateState(
-        this.context, {
-          soundObj: status,
-          isPlaying: false
-        })
-    }
+    // //playing audio for the first time
+    // if (soundObj === null) {
+    //   const playbackObj = new Audio.Sound()
+    //   const status = await play(playbackObj, audio.uri)
+    //   const index = audioFiles.indexOf(audio)
+    //   updateState(
+    //     this.context, {
+    //     currentAudio: audio,
+    //     playbackObj: playbackObj,
+    //     soundObj: status,
+    //     isPlaying: true,
+    //     currentAudioIndex: index,
+    //   })
+    //   playbackObj.setOnPlaybackStatusUpdate(this.context.onPlaybackStatusUpdate)
+    //   return storeAudioForNextOpening(audio, index)
+    // }
 
-    //resume the audio
-    if(soundObj.isLoaded 
-      && !soundObj.isPlaying 
-      && currentAudio.id === audio.id){
-        const status = await resume(playbackObj)
-        return updateState(
-          this.context, {
-            soundObj: status,
-            isPlaying: true
-          })
-    }
+    // //pause the audio
+    // if(soundObj.isLoaded 
+    //   && soundObj.isPlaying
+    //   && currentAudio.id === audio.id) {
+    //   const status = await pause(playbackObj)
+    //   return updateState(
+    //     this.context, {
+    //       soundObj: status,
+    //       isPlaying: false
+    //     })
+    // }
 
-    //select another audio
-    if(soundObj.isLoaded && currentAudio.id !== audio.id){
-      const status = await playNext(playbackObj, audio.uri)
-      const index = audioFiles.indexOf(audio)
-      updateState(
-        this.context, {
-          currentAudio: audio,
-          soundObj: status,
-          isPlaying: true,
-          currentAudioIndex: index,
-        }
-      )
-      return storeAudioForNextOpening(audio, index)
-    }
+    // //resume the audio
+    // if(soundObj.isLoaded 
+    //   && !soundObj.isPlaying 
+    //   && currentAudio.id === audio.id){
+    //     const status = await resume(playbackObj)
+    //     return updateState(
+    //       this.context, {
+    //         soundObj: status,
+    //         isPlaying: true
+    //       })
+    // }
+
+    // //select another audio
+    // if(soundObj.isLoaded && currentAudio.id !== audio.id){
+    //   const status = await playNext(playbackObj, audio.uri)
+    //   const index = audioFiles.indexOf(audio)
+    //   updateState(
+    //     this.context, {
+    //       currentAudio: audio,
+    //       soundObj: status,
+    //       isPlaying: true,
+    //       currentAudioIndex: index,
+    //     }
+    //   )
+    //   return storeAudioForNextOpening(audio, index)
+    // }
   }
   
 
