@@ -6,7 +6,8 @@ import {
   Text, 
   ScrollView, 
   TouchableOpacity, 
-  FlatList, 
+  FlatList,
+  Alert,
 } from 'react-native';
 import PlayListInputModal from '../components/PlayListInputModal';
 import { AudioContext } from '../context/AudioProvider';
@@ -70,7 +71,6 @@ const Playlist = () => {
     }
     updateState(context, 
       {playList: JSON.parse(result)})
-    console.log('render')
   }
 
   useEffect(() => {
@@ -79,13 +79,58 @@ const Playlist = () => {
     }
   }, [])
 
+  const handleBannerPress = async (playList) => {
+    //update playlist if there's any selected audio
+    if(addToPlayList){
+      const result = await AsyncStorage.getItem('playlist')
+      let oldList = []
+      let updatedList = []
+      let sameAudio = false
+
+      if(result !== null){
+        oldList = JSON.parse(result)
+        
+        updatedList = oldList.filter(list => {
+          if(list.id === playList.id){
+            // check if that same audio is already inside our list or not
+            for(let audio of list.audios){
+              if(audio.id === addToPlayList.id){
+                //alert with message
+                sameAudio = true
+                return
+              }
+            }
+            //update the playlist if there's any selected audio
+            list.audios = [...list.audios, addToPlayList]
+          }
+          return list
+        })
+      }
+      if(sameAudio){
+        Alert.alert('Audio encontrado!', 
+        `${addToPlayList.filename} já foi adicionado na lista!`)
+        sameAudio = false
+        return updateState(context, {addToPlayList: null})
+      }
+      updateState(context, {addToPlayList: null, 
+        playList: [...updatedList]})
+      return AsyncStorage.setItem('playlist', JSON.stringify([...updatedList]))
+    }
+    //if there's no selected audio then open the list
+    console.log('opening list')
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       
 
       {playList.length 
         ? playList.map(item => (
-          <TouchableOpacity key={item.id.toString()} style={styles.playListBanner}>
+          <TouchableOpacity 
+            key={item.id.toString()} 
+            style={styles.playListBanner}
+            onPress={() => handleBannerPress(item)}
+          >
             <Text>{item.title}</Text>
             <Text style={styles.audioCount}>
               {item.audios.length > 1 
