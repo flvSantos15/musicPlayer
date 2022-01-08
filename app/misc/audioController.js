@@ -1,12 +1,14 @@
 import { storeAudioForNextOpening } from '../misc/helper'
-
+import { convertTime } from '../misc/helper'
 
 //play audio
 export const play = async (playbackObj, uri) => {
   try {
     return await playbackObj.loadAsync(
       { uri },
-      { shouldPlay: true }
+      { shouldPlay: true,
+        progressUpdateIntervalMillis: 1000
+      }
     )
   } catch (error) {
     console.log('error inside play helper method', error.mensage)
@@ -14,7 +16,7 @@ export const play = async (playbackObj, uri) => {
 }
 
 //pause audio
-export const pause = async (playbackObj) => {
+export const pause = async playbackObj => {
   try {
     return await playbackObj.setStatusAsync(
       { shouldPlay: false }
@@ -25,7 +27,7 @@ export const pause = async (playbackObj) => {
 }
 
 //resume audio
-export const resume = async (playbackObj) => {
+export const resume = async playbackObj => {
   try {
     return await playbackObj.playAsync()
   } catch (error) {
@@ -197,4 +199,30 @@ export const changeAudio = async (context, select) => {
   } catch (error) {
     console.log('error inside changeAudio method', error.message)
   }
+}
+
+export const renderCurrentTime = (context) => {
+  const {playbackPosition} = context
+  return convertTime(playbackPosition / 1000)
+}
+
+export const moveAudio = async (context, value) => {
+  const {soundObj, isPlaying, playbackObj, updateState, playbackPosition} = context
+  if (soundObj === null || !isPlaying) return
+
+  try {
+    const status = await playbackObj.setPositionAsync(
+      Math.floor(soundObj.durationMillis * value)
+    )
+    
+    await resume(playbackObj)
+    
+    updateState(context, {
+      soundObj: status,
+      playbackPosition: status.positionMillis
+    })
+  } catch (error) {
+    console.log('error inside onSlidingComplete callback', error.message)
+  }
+
 }
