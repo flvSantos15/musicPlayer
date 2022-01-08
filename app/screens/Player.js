@@ -100,7 +100,6 @@ const Player = () => {
               }
               onSlidingComplete={async value => {
                 await moveAudio(context, value)
-                renderCurrentTime()
                 setCurrentPosition(0)
               }}
             />

@@ -31,7 +31,7 @@ export const resume = async playbackObj => {
   try {
     return await playbackObj.playAsync()
   } catch (error) {
-    console.log('error inside resume helper method', erro.message)
+    console.log('error inside resume helper method', error.message)
   }
 }
 
@@ -80,7 +80,8 @@ export const selectAudio = async (audio, context) => {
       return updateState(
         context, {
         soundObj: status,
-        isPlaying: false
+        isPlaying: false,
+        playbackPosition: status.positionMillis,
       })
     }
 
@@ -201,13 +202,8 @@ export const changeAudio = async (context, select) => {
   }
 }
 
-// export const renderCurrentTime = (context) => {
-//   const {playbackPosition} = context
-//   return convertTime(playbackPosition / 1000)
-// }
-
 export const moveAudio = async (context, value) => {
-  const {soundObj, isPlaying, playbackObj, updateState, playbackPosition} = context
+  const {soundObj, isPlaying, playbackObj, updateState} = context
   if (soundObj === null || !isPlaying) return
 
   try {
@@ -224,5 +220,4 @@ export const moveAudio = async (context, value) => {
   } catch (error) {
     console.log('error inside onSlidingComplete callback', error.message)
   }
-
 }
