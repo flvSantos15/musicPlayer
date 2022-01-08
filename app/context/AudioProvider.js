@@ -21,6 +21,8 @@ export class AudioProvider extends Component {
       soundObj: null,
       currentAudio: {},
       isPlaying: false,
+      isPlayListRunning: false,
+      activePlayList: [],
       currentAudioIndex: null,
       playbackPosition: null,
       playbackDuration: null,
@@ -121,6 +123,30 @@ export class AudioProvider extends Component {
     }
     
     if(playbackStatus.didJustFinish){
+      if(this.state.isPlayListRunning){
+        let audio
+        const indexOnPlayList = 
+          this.state.activePlayList.audios.findIndex(({id}) => 
+            id === this.state.currentAudio.id
+          )
+        const nextIndex = indexOnPlayList + 1
+        audio = this.state.activePlayList.audios[nextIndex]
+
+        if(!audio) audio = this.state.activePlayList.audios[0]
+
+        const indexOnAllList = this.state.audioFiles.findIndex(({id}) => 
+        id === audio.id)
+
+        const status = await playNext(this.state.playbackObj, audio.uri)
+
+        return this.updateState(this, {
+          soundObj: status,
+          isPlaying: true,
+          currentAudio: audio,
+          currentAudioIndex: indexOnAllList
+        })
+      }
+
       const nextAudioIndex = this.state.currentAudioIndex + 1
       //there's no next audio to play
       if(nextAudioIndex >= this.totalAudioCount){
@@ -181,6 +207,8 @@ export class AudioProvider extends Component {
       currentAudioIndex,
       playbackPosition,
       playbackDuration,
+      isPlayListRunning,
+      activePlayList,
     } = this.state
     if (permissionError) {
       return (
@@ -206,6 +234,8 @@ export class AudioProvider extends Component {
           totalAudioCount: this.totalAudioCount,
           playbackPosition,
           playbackDuration,
+          isPlayListRunning,
+          activePlayList,
           updateState: this.updateState,
           loadPreviousAudio: this.loadPreviousAudio,
           onPlaybackStatusUpdate: this.onPlaybackStatusUpdate

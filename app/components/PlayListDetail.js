@@ -9,15 +9,15 @@ import {
 } from 'react-native';
 import AudioListItem from '../components/AudioListItem'
 
-const PlayListDetail = ({visible, playList, onClose}) => {
+const PlayListDetail = ({visible, playList}) => {
   return (
     <Modal 
       visible={visible} 
       animationType='slide' 
       transparent
-      onRequestClose={onClose}
+      // onRequestClose={onClose}
     >
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
           <Text style={styles.title}>{playList.title}</Text>
           <FlatList
             contentContainerStyle={styles.listContainer}
@@ -32,7 +32,7 @@ const PlayListDetail = ({visible, playList, onClose}) => {
               />
             </View>}
           />
-        </View>
+        </View> */}
         <View style={[
           StyleSheet.absoluteFillObject,
           styles.modalBg]}

@@ -27,13 +27,14 @@ const OptionModal = ({
             {filename}
           </Text>
           <View style={styles.optionContainer}>
-            <TouchableOpacity onPress={onPlayPress}>
+            {/* <TouchableOpacity onPress={onPlayPress}>
               <Text style={styles.option}>
                 <AntDesign name="playcircleo" size={20} color="#bc0b17" />
                 {' '}
                 Play
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
             <TouchableOpacity onPress={onPlayListPress}>
               <Text style={styles.option}>
                 <MaterialIcons name="playlist-add" size={20} color="#bc0b17" />
