@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Slider from '@react-native-community/slider';
 import PlayerButton from '../components/PlayerButton';
 import { AudioContext } from '../context/AudioProvider';
-import { selectAudio, changeAudio, pause, resume, moveAudio, renderCurrentTime } from '../misc/audioController'
+import { selectAudio, changeAudio, pause, resume, moveAudio, } from '../misc/audioController'
 import { convertTime } from '../misc/helper';
 
 const { width } = Dimensions.get('window')
@@ -38,9 +38,9 @@ const Player = () => {
     await changeAudio(context, 'previous')
   }
 
-  // const renderCurrentTime = async () => {
-  //   return convertTime(context.playbackPosition / 1000)
-  // }
+  const renderCurrentTime = () => {
+    return convertTime(context.playbackPosition / 1000)
+  }
 
   if (!context.currentAudio) return null
 
@@ -68,7 +68,7 @@ const Player = () => {
               {
                 currentPosition
                   ? currentPosition
-                  : renderCurrentTime(context)
+                  : renderCurrentTime()
               }
             </Text>
 
@@ -98,10 +98,11 @@ const Player = () => {
                   }
                 }
               }
-              onSlidingComplete={async value => (
+              onSlidingComplete={async value => {
                 await moveAudio(context, value)
-                // renderCurrentTime()
-              )}
+                renderCurrentTime()
+                setCurrentPosition(0)
+              }}
             />
 
             <Text style={styles.timeText}>

@@ -201,10 +201,10 @@ export const changeAudio = async (context, select) => {
   }
 }
 
-export const renderCurrentTime = (context) => {
-  const {playbackPosition} = context
-  return convertTime(playbackPosition / 1000)
-}
+// export const renderCurrentTime = (context) => {
+//   const {playbackPosition} = context
+//   return convertTime(playbackPosition / 1000)
+// }
 
 export const moveAudio = async (context, value) => {
   const {soundObj, isPlaying, playbackObj, updateState, playbackPosition} = context
