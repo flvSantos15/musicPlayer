@@ -47,9 +47,19 @@ const Player = () => {
   return (
     <Screen>
       <View style={styles.container}>
-        <Text style={styles.audioCount}>
-          {`${context.currentAudioIndex + 1} / ${context.totalAudioCount}`}
-        </Text>
+        <View style={styles.containerTitle}>
+          <View style={{flexDirection: 'row'}}>
+          {context.isPlayListRunning && (
+            <>
+              <Text style={{fontWeight: 'bold', color: '#fff'}}>From Playlist: </Text>
+              <Text style={{color: '#fff'}}>{context.activePlayList.title}</Text>
+            </>
+          )}
+          </View>
+          <Text style={styles.audioCount}>
+            {`${context.currentAudioIndex + 1} / ${context.totalAudioCount}`}
+          </Text>
+        </View>
 
         <View style={styles.midBannerContainer}>
           <MaterialCommunityIcons
@@ -151,9 +161,13 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
     backgroundColor: '#001259'
   },
+  containerTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+  },
   audioCount: {
-    textAlign: 'right',
-    padding: 15,
     color: '#fff',
     fontSize: 14,
   },

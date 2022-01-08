@@ -141,7 +141,7 @@ export class Audiolist extends Component {
                 extendedState={{isPlaying}}
               />
               <OptionModal
-                onPlayPress={() => alert('Playing')}
+                // onPlayPress={() => alert('playing')}
                 onPlayListPress={() => {
                   this.context.updateState(this.context, {
                     addToPlayList: this.currentItem

@@ -11,9 +11,11 @@ import {
 import PlayListInputModal from '../components/PlayListInputModal';
 import { AudioContext } from '../context/AudioProvider';
 import PlayListDetail from '../components/PlayListDetail'
+// import PlayListDetail from './PlayListDetail'
 
 let selectedPlayList = {}
-const Playlist = () => {
+
+const Playlist = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [showPlayList, setShowPlayList] = useState(false)
 
@@ -121,14 +123,13 @@ const Playlist = () => {
     //if there's no selected audio then open the list
     selectedPlayList = playList
 
-    setShowPlayList(true)
+    // setShowPlayList(true)
+    navigation.navigate('PlayListDetail', playList)
   }
 
   return (
     <>
       <ScrollView contentContainerStyle={styles.container}>
-        
-
         {playList.length 
           ? playList.map(item => (
             <TouchableOpacity 
@@ -176,7 +177,6 @@ const styles = StyleSheet.create({
   },
   playListBanner: {
     padding: 5,
-    // backgroundColor: 'rgba(204, 204, 204, 0.3)',
     backgroundColor: '#fff',
     borderRadius: 5,
     marginBottom: 20,
