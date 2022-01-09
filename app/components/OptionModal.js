@@ -1,22 +1,23 @@
 import React from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  Text, 
-  Modal, 
-  Dimensions, 
+import {
+  View,
+  StyleSheet,
+  Text,
+  Modal,
+  Dimensions,
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
 
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
-const OptionModal = ({ 
-  visible, 
-  currentItem, 
-  onClose, 
-  onPlayPress, 
-  onPlayListPress 
+const OptionModal = ({
+  visible,
+  currentItem,
+  onClose,
+  options,
+  onPlayPress,
+  onPlayListPress
 }) => {
   const { filename } = currentItem;
   return (
@@ -27,6 +28,17 @@ const OptionModal = ({
             {filename}
           </Text>
           <View style={styles.optionContainer}>
+            {options.map(option => {
+              return (
+                <TouchableOpacity key={option.title} onPress={option.onPress}>
+                  <Text style={styles.option}>
+                    <AntDesign name="playcircleo" size={20} color="#bc0b17" />
+                    {' '}
+                    {option.title}
+                  </Text>
+                </TouchableOpacity>
+              )
+            })}
             {/* <TouchableOpacity onPress={onPlayPress}>
               <Text style={styles.option}>
                 <AntDesign name="playcircleo" size={20} color="#bc0b17" />
@@ -35,13 +47,13 @@ const OptionModal = ({
               </Text>
             </TouchableOpacity> */}
 
-            <TouchableOpacity onPress={onPlayListPress}>
+            {/* <TouchableOpacity onPress={onPlayListPress}>
               <Text style={styles.option}>
                 <MaterialIcons name="playlist-add" size={20} color="#bc0b17" />
                 {' '}
                 Add to Playlist
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <TouchableWithoutFeedback onPress={onClose}>

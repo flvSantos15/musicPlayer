@@ -127,6 +127,14 @@ export class Audiolist extends Component {
     )
   }
 
+  navigateToPlaylist = () => {
+    this.context.updateState(this.context, {
+      addToPlayList: this.currentItem
+    })
+    this.props.navigation.navigate('PlayList')
+    this.setState({ ...this.state, optionModalVisible: false })
+  }
+
   render() {
     return (
       <AudioContext.Consumer>
@@ -142,13 +150,17 @@ export class Audiolist extends Component {
               />
               <OptionModal
                 // onPlayPress={() => alert('playing')}
-                onPlayListPress={() => {
-                  this.context.updateState(this.context, {
-                    addToPlayList: this.currentItem
-                  })
-                  this.props.navigation.navigate('PlayList')
-                  this.setState({ ...this.state, optionModalVisible: false })
-                }}
+                // onPlayListPress={() => {
+                //   this.context.updateState(this.context, {
+                //     addToPlayList: this.currentItem
+                //   })
+                //   this.props.navigation.navigate('PlayList')
+                //   this.setState({ ...this.state, optionModalVisible: false })
+                // }}
+                options={[{
+                  title: 'Add to playlist', 
+                  onPress: this.navigateToPlaylist
+                }]}
                 currentItem={this.currentItem}
                 onClose={() => {
                   this.setState({ ...this.state, optionModalVisible: false })
